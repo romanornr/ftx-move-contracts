@@ -3,13 +3,17 @@ package csv
 import (
 	"bufio"
 	"encoding/csv"
+	"fmt"
 	"github.com/romanornr/ftx-move-contracts/futures"
 	"io"
 	"io/ioutil"
 	"log"
+	"math"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
+	"time"
 )
 
 func ScanFiles(extension string) []string {
@@ -50,7 +54,6 @@ func ReadCSVFiles(csvfiles []string) ([][]string, error) {
 			return nil, err
 		}
 
-
 		//var error error
 		for {
 			record, error := r.Read()
@@ -61,48 +64,49 @@ func ReadCSVFiles(csvfiles []string) ([][]string, error) {
 			}
 
 			records = append(records, record)
-
-			//fmt.Println(records)
-
-
-			//if strings.Contains(record[0], "BTC-MOVE") {
-			//	fmt.Println(record)
-			//}
-
-			//amountString := strings.TrimRight(record[2], " XBt")     // 88,055,513 XBt = 0.88 btc
-			//amountString = strings.ReplaceAll(amountString, ",", "") // remove the  ,
-			//amount, err := strconv.ParseFloat(amountString, 64)
-			//if err != nil {
-			//	panic(err)
-			//}
-			//
-			//fee, _ := strconv.ParseFloat(record[3], 64)
-			//
-			//tx := account.Transaction{
-			//	Time:          record[0],
-			//	Type:          record[1],
-			//	Amount:        amount, //amount,
-			//	Fee:           fee,
-			//	Address:       record[4],
-			//	Status:        record[5],
-			//	WalletBalance: record[6],
-			//}
-			//
-			//transactions = append(transactions, tx)
 		}
 	}
-return records, nil
+	return records, nil
 }
 
 func GetDailyMoveContractsRecords(records [][]string) [][]string {
 	var expiredFutures futures.ExpiredFutures
-	var moveContracts [][]string
+	var moveContractsRecords [][]string
 	for _, record := range records {
 		expiredFutures.Ticker = record[0]
 		expiredFutures.Name = record[1]
-		if strings.Contains(expiredFutures.Ticker, "BTC-MOVE") && !strings.Contains(expiredFutures.Name, "Weekly MOVE"){
-			moveContracts = append(moveContracts, record)
+		if strings.Contains(expiredFutures.Ticker, "BTC-MOVE") && !strings.Contains(expiredFutures.Name, "Weekly MOVE") {
+			moveContractsRecords = append(moveContractsRecords, record)
 		}
 	}
-	return moveContracts
+	return moveContractsRecords
 }
+
+func AnalyzeDailyMoveContractRecords(records [][]string) futures.Statistics{
+	var statistics futures.Statistic
+	var totalStats futures.Statistics
+	layout := "2006-01-02T15:04:05Z07:00" // RFC3339
+	var averageExpirationPrice float64
+	var amountContracts float64
+	for i := len(records)-1; i >= 0; i-- {
+		statistics.Type = "BTC-MOVE"
+		recordTime, _ := time.Parse(layout, records[i][2])
+		statistics.Day = recordTime.Weekday()
+		statistics.Time = fmt.Sprintf("%d-%s-%d", recordTime.Day(), recordTime.Month().String(), recordTime.Year())
+
+		currentYear := time.Now().Year()
+		if recordTime.Year() <  currentYear {
+			continue
+		}
+		amountContracts += 1
+
+		price, _ := strconv.ParseFloat(records[i][3], 64)
+		statistics.ExpirationPrice = math.Round(price*100)/100
+
+		averageExpirationPrice += price
+		totalStats.Static = append(totalStats.Static, statistics)
+	}
+
+	return totalStats
+}
+
