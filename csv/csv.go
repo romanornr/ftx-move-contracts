@@ -86,7 +86,7 @@ func AnalyzeDailyMoveContractRecords(records [][]string) futures.Statistics{
 	var statistics futures.Statistic
 	var totalStats futures.Statistics
 	layout := "2006-01-02T15:04:05Z07:00" // RFC3339
-	var averageExpirationPrice float64
+	var totalExpirationPricesCombined float64
 	var amountContracts float64
 	for i := len(records)-1; i >= 0; i-- {
 		statistics.Type = "BTC-MOVE"
@@ -103,9 +103,11 @@ func AnalyzeDailyMoveContractRecords(records [][]string) futures.Statistics{
 		price, _ := strconv.ParseFloat(records[i][3], 64)
 		statistics.ExpirationPrice = math.Round(price*100)/100
 
-		averageExpirationPrice += price
+		totalExpirationPricesCombined += price
+		//statistics.AverageExpirationPrice += price
 		totalStats.Static = append(totalStats.Static, statistics)
 	}
+	totalStats.AverageExpirationPrice = totalExpirationPricesCombined / amountContracts
 
 	return totalStats
 }
