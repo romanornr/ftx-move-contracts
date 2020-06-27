@@ -1,17 +1,27 @@
 package main
 
 import (
-	_"fmt"
+	"fmt"
+	_ "fmt"
 	"github.com/romanornr/ftx-move-contracts/futures"
+	"time"
 )
 
 func main() {
-	//const padding = 3
-	//w := tabwriter.NewWriter(os.Stdout, 10, 10, padding, ' ', tabwriter.TabIndent)
-	//fmt.Printf("Average expiration price: %s\t%.2f\n", stats.Static[0].Type, moveContractsData.AverageExpirationPrice)
-	//fmt.Fprintf(w, "Average expiration price: %s\t%s\t%.2f\t\n", "BTC-MOVE", stats.Day, stats.AverageExpirationPrice)
-	//w.Flush()
 	expired := futures.GetExpiredFutures()
-	expired.GetDailyMOVEContracts()
+	MOVEContractsData := expired.GetDailyMOVEContracts()
+	contracts := MOVEContractsData.AverageDailyMOVEContractsThisYear()
+	days := []time.Weekday{time.Monday, time.Tuesday, time.Wednesday, time.Thursday, time.Friday, time.Saturday, time.Sunday}
 
+	for i := len(contracts.Expired)-1; i >= 0; i-- {
+		fmt.Printf("%s\tGroup: %s\tDay:%s\tExpiration price:$%.2f\n",contracts.Expired[i].Description, contracts.Expired[i].Group, contracts.Expired[i].Expiry.Weekday().String(), contracts.Expired[i].Mark)
+	}
+	fmt.Println()
+
+	for _, day := range days {
+		move := contracts.AverageDayWeek(day)
+		fmt.Printf("Average %s MOVE Contract expiration price on %s\t $%2.f\n", move.Expired[0].UnderlyingDescription, day, move.AverageExpirationPrice)
+	}
+
+	fmt.Printf("\nCurrent average daily FTX MOVE contracts expiration price for %d: $%2.f\n", time.Now().Year(), contracts.AverageExpirationPrice)
 }

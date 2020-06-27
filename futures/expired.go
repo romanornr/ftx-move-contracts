@@ -2,13 +2,14 @@ package futures
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"time"
 )
+
+const LAYOUT = "2006-01-02T15:04:05Z07:00" // RFC3339
 
 type ExpiredFuturesResponse struct {
 	Result []struct {
@@ -110,14 +111,46 @@ func GetExpiredFutures() ExpiredFuturesResponse {
 	return expiredFutures
 }
 
-func (expiredFuturesResp ExpiredFuturesResponse) GetDailyMOVEContracts() {
+func (expiredFuturesResp ExpiredFuturesResponse) GetDailyMOVEContracts() ExpiredFutures {
 	response := expiredFuturesResp.Result
 	expiredFutures := new(ExpiredFutures)
 
 	for _, expiredFuture := range response {
-		if expiredFuture.Type == "move" && expiredFuture.Underlying == "BTC" {
+		if expiredFuture.Type == "move" && expiredFuture.Underlying == "BTC" && expiredFuture.Expired == true {
 			expiredFutures.ExpiredFutures = append(expiredFutures.ExpiredFutures, expiredFuture)
 		}
 	}
-	fmt.Println(expiredFutures)
+	return *expiredFutures
+}
+
+// Get total expiration price of Daily MOVE Contracts per year
+func (expiredFutures ExpiredFutures) AverageDailyMOVEContractsThisYear() MOVEContracts {
+	var MOVEContracts = new(MOVEContracts)
+	var totalMOVEContractsThisYear float64
+	currentYear := time.Now().Year()
+	for _, expiredMOVEContract := range expiredFutures.ExpiredFutures {
+		if expiredMOVEContract.Group == "daily" {
+			if expiredMOVEContract.Expiry.Year() == currentYear {
+				totalMOVEContractsThisYear += 1
+				MOVEContracts.AverageExpirationPrice += expiredMOVEContract.Mark
+				MOVEContracts.Expired = append(MOVEContracts.Expired, expiredMOVEContract)
+			}
+		}
+	}
+	MOVEContracts.AverageExpirationPrice = MOVEContracts.AverageExpirationPrice / totalMOVEContractsThisYear
+	return *MOVEContracts
+}
+
+func (moveContracts MOVEContracts) AverageDayWeek(day time.Weekday) MOVEContracts{
+	var MOVEContracts = new(MOVEContracts)
+	var totalMOVEContractsWeekDay float64
+	for _, moveContract := range moveContracts.Expired {
+		if moveContract.Expiry.Weekday() == day {
+			totalMOVEContractsWeekDay += 1
+			MOVEContracts.Expired = append(MOVEContracts.Expired, moveContract)
+			MOVEContracts.AverageExpirationPrice += moveContract.Mark
+		}
+	}
+	MOVEContracts.AverageExpirationPrice = MOVEContracts.AverageExpirationPrice / totalMOVEContractsWeekDay
+	return *MOVEContracts
 }

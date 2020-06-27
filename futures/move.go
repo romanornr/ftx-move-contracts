@@ -1,17 +1,15 @@
 package futures
 
-type MOVE struct {
-	ExpiredFutures
-	//Description string
-	//Group string
-	//Expired bool
+type MOVEContracts struct {
+	Expired []ExpiredFuture
+	AverageExpirationPrice float64
 	//Day time.Weekday
 	//Time string
-	//Last float64
-	//UpperBound float64
-	//Type string
-	//underlying string
 }
+
+//type MOVEContracts struct {
+//	MOVEContract []MOVEContract
+//}
 
 //type Statistics struct {
 //	Static []Statistic
