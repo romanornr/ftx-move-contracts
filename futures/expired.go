@@ -10,13 +10,6 @@ import (
 	"time"
 )
 
-//type ExpiredFutures struct {
-//	Ticker string
-//	Name string
-//	ExpiryDate string
-//	ExpirationPrice float64
-//}
-
 type ExpiredFuturesResponse struct {
 	Result []struct {
 		Ask                   interface{} `json:"ask"`
@@ -117,7 +110,7 @@ func GetExpiredFutures() ExpiredFuturesResponse {
 	return expiredFutures
 }
 
-func (expiredFuturesResp ExpiredFuturesResponse) DailyMOVE() {
+func (expiredFuturesResp ExpiredFuturesResponse) GetDailyMOVEContracts() {
 	response := expiredFuturesResp.Result
 	expiredFutures := new(ExpiredFutures)
 
