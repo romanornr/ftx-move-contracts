@@ -25,6 +25,28 @@ func main() {
 	}
 	fmt.Println()
 
+	for i, month := range months {
+		move := contracts.AverageMonth(month)
+		if move.Expired[i].Expiry.Month() == time.Now().Month() {
+			break // break out of the loop
+		}
+		if move.AverageExpirationPrice > averageYearlyExpirationPrice {
+			fmt.Printf("Average %s MOVE Contract expiration price on %s\t"+color.Green("$%2.f\n"), move.Expired[i].UnderlyingDescription, month, move.AverageExpirationPrice)
+		} else {
+			fmt.Printf("Average %s MOVE Contract expiration price on %s\t"+color.Red("$%2.f\n"), move.Expired[i].UnderlyingDescription, month, move.AverageExpirationPrice)
+		}
+	}
+
+	// current month, using this method because index out of range [0] with length 0 by using months
+	currentMonth := contracts.CurrentAverageMonth()
+	if currentMonth.AverageExpirationPrice > averageYearlyExpirationPrice {
+		fmt.Printf("Average %s MOVE Contract expiration price on %s\t"+color.Green("$%2.f\n"), currentMonth.Expired[0].UnderlyingDescription, time.Now().Month(), currentMonth.AverageExpirationPrice)
+	} else {
+		fmt.Printf("Average %s MOVE Contract expiration price on %s\t"+color.Red("$%2.f\n"), currentMonth.Expired[0].UnderlyingDescription, time.Now().Month(), currentMonth.AverageExpirationPrice)
+
+	}
+
+	fmt.Println()
 
 	for _, day := range days {
 		move := contracts.AverageDayWeek(day)
@@ -32,20 +54,6 @@ func main() {
 			fmt.Printf("Average %s MOVE Contract expiration price on %s\t"+color.Green("$%2.f\n"), move.Expired[0].UnderlyingDescription, day, move.AverageExpirationPrice)
 		} else {
 			fmt.Printf("Average %s MOVE Contract expiration price on %s\t"+color.Red("$%2.f\n"), move.Expired[0].UnderlyingDescription, day, move.AverageExpirationPrice)
-		}
-	}
-
-	fmt.Println()
-
-	for _, month := range months {
-		move := contracts.AverageMonth(month)
-		//if time.Now().Month() == time.June {
-		//	continue
-		//}
-		if move.AverageExpirationPrice > averageYearlyExpirationPrice {
-			fmt.Printf("Average %s MOVE Contract expiration price on %s\t"+color.Green("$%2.f\n"), move.Expired[0].UnderlyingDescription, month, move.AverageExpirationPrice)
-		} else {
-			fmt.Printf("Average %s MOVE Contract expiration price on %s\t"+color.Red("$%2.f\n"), move.Expired[0].UnderlyingDescription, month, move.AverageExpirationPrice)
 		}
 	}
 
