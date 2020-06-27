@@ -141,6 +141,7 @@ func (expiredFutures ExpiredFutures) AverageDailyMOVEContractsThisYear() MOVECon
 	return *MOVEContracts
 }
 
+// move contract average expiration price of the day of the week
 func (moveContracts MOVEContracts) AverageDayWeek(day time.Weekday) MOVEContracts {
 	var MOVEContracts = new(MOVEContracts)
 	var totalMOVEContractsWeekDay float64
@@ -152,5 +153,20 @@ func (moveContracts MOVEContracts) AverageDayWeek(day time.Weekday) MOVEContract
 		}
 	}
 	MOVEContracts.AverageExpirationPrice = MOVEContracts.AverageExpirationPrice / totalMOVEContractsWeekDay
+	return *MOVEContracts
+}
+
+// daily move contract average expiration price of the month
+func (moveContracts MOVEContracts) AverageMonth(month time.Month) MOVEContracts {
+	var MOVEContracts = new(MOVEContracts)
+	var totalMOVEContracts float64
+	for _, moveContract := range moveContracts.Expired {
+		if moveContract.Expiry.Month() == month {
+			totalMOVEContracts += 1
+			MOVEContracts.Expired = append(MOVEContracts.Expired, moveContract)
+			MOVEContracts.AverageExpirationPrice += moveContract.Mark
+		}
+	}
+	MOVEContracts.AverageExpirationPrice = MOVEContracts.AverageExpirationPrice / totalMOVEContracts
 	return *MOVEContracts
 }
