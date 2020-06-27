@@ -141,7 +141,7 @@ func (expiredFutures ExpiredFutures) AverageDailyMOVEContractsThisYear() MOVECon
 	return *MOVEContracts
 }
 
-func (moveContracts MOVEContracts) AverageDayWeek(day time.Weekday) MOVEContracts{
+func (moveContracts MOVEContracts) AverageDayWeek(day time.Weekday) MOVEContracts {
 	var MOVEContracts = new(MOVEContracts)
 	var totalMOVEContractsWeekDay float64
 	for _, moveContract := range moveContracts.Expired {

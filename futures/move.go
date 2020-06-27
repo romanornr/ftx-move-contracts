@@ -1,7 +1,7 @@
 package futures
 
 type MOVEContracts struct {
-	Expired []ExpiredFuture
+	Expired                []ExpiredFuture
 	AverageExpirationPrice float64
 	//Day time.Weekday
 	//Time string
@@ -16,4 +16,3 @@ type MOVEContracts struct {
 //	Day time.Weekday
 //	AverageExpirationPrice float64
 //}
-

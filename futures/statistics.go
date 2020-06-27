@@ -5,23 +5,23 @@ import (
 )
 
 type Statistic struct {
-	Type string
-	Day time.Weekday
-	Time string
-	ExpirationPrice float64
+	Type                   string
+	Day                    time.Weekday
+	Time                   string
+	ExpirationPrice        float64
 	AverageExpirationPrice float64
 }
 
 type Statistics struct {
-	Static []Statistic
-	Day time.Weekday
+	Static                 []Statistic
+	Day                    time.Weekday
 	AverageExpirationPrice float64
 }
 
-func (statistics Statistics) DailyAverage(day string) Statistics{
+func (statistics Statistics) DailyAverage(day string) Statistics {
 	var daysCount = 0
 	statistics.AverageExpirationPrice = 0 // reset
-	for i := len(statistics.Static)-1; i >= 0; i-- {
+	for i := len(statistics.Static) - 1; i >= 0; i-- {
 		if statistics.Static[i].Day.String() != day {
 			///fmt.Println(statistics.Static[i].Day)
 			continue
