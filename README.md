@@ -1,5 +1,23 @@
 # ftx-move-contracts
 
+### MOVE Contracts
+MOVE contracts are a straddle where the strike price is determined at the first hour of the day and expires at the last house of the day. (UTC).
+So why did FTX decide to create MOVE contracts instead of only options like Deribit and Okcoin/Okex?
+Options aren’t that popular under most retail traders, most retail traders in crypto have never tried trading Options, and FTX wants to provide centralized liquidity.
+
+The downside at having so many different options with so many different strike prices and expirations on different exchanges is hard to market make for market makers and the liquidity, positions, and the risk is fractured. It gives a less liquid trading experience. FTX MOVE contracts are an attempt to create more collective knowledge of the contract to trade volatility.
+
+Read my medium article about FTX MOVE Contracts
+https://medium.com/@romanornr/ftx-com-move-contracts-46c586a66408
+
+### What does this tool do?
+
+This tool is for FTX daily MOVE contracts. It analyzes all daily MOVE Contracts from the current year we are in and shows the average expiration price of all daily MOVE Contracs. Not only that per also by week day average and by months. For example some days are more volatile than others. Data suggest that weekend days usually expire below the average expiration price. This tool can basically give you an edge.
+
+
+![alt text](https://github.com/romanornr/ftx-move-contracts/blob/master/screenshots/1.png?raw=true)
+<br></br>
+
 ### Build from source (all platforms)
 
 <details><summary><b>Install Dependencies</b></summary>
