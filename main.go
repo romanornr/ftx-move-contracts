@@ -57,5 +57,6 @@ func main() {
 		}
 	}
 
-	fmt.Printf("\nCurrent average daily FTX MOVE contracts expiration price for %d: "+color.Green("$%2.f\n"), time.Now().Year(), contracts.AverageExpirationPrice)
+	fmt.Printf("\nCurrent average daily FTX MOVE contracts expiration price for %d: "+color.Green("$%2.f\n\n"), time.Now().Year(), contracts.AverageExpirationPrice)
+	fmt.Printf("Signup on FTX with this referral link receive a 10%% discount instead of the regular 5%% discount: %s\n", "https://ftx.com/#a=10percentDiscountOnFees")
 }
