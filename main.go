@@ -31,18 +31,18 @@ func main() {
 			break // break out of the loop
 		}
 		if move.AverageExpirationPrice > averageYearlyExpirationPrice {
-			fmt.Printf("Average %s MOVE Contract expiration price on %s\t"+color.Green("$%2.f\n"), move.Expired[i].UnderlyingDescription, month, move.AverageExpirationPrice)
+			fmt.Printf("Average %s %s MOVE Contract expiration price on %s\t"+color.Green("$%2.f\n"), move.Expired[i].Group, move.Expired[i].UnderlyingDescription, month, move.AverageExpirationPrice)
 		} else {
-			fmt.Printf("Average %s MOVE Contract expiration price on %s\t"+color.Red("$%2.f\n"), move.Expired[i].UnderlyingDescription, month, move.AverageExpirationPrice)
+			fmt.Printf("Average %s %s MOVE Contract expiration price on %s\t"+color.Red("$%2.f\n"), move.Expired[i].Group, move.Expired[i].UnderlyingDescription, month, move.AverageExpirationPrice)
 		}
 	}
 
 	// current month, using this method because index out of range [0] with length 0 by using months
 	currentMonth := contracts.CurrentAverageMonth()
 	if currentMonth.AverageExpirationPrice > averageYearlyExpirationPrice {
-		fmt.Printf("Average %s MOVE Contract expiration price on %s\t"+color.Green("$%2.f\n"), currentMonth.Expired[0].UnderlyingDescription, time.Now().Month(), currentMonth.AverageExpirationPrice)
+		fmt.Printf("Average %s %s MOVE Contract expiration price on %s\t"+color.Green("$%2.f\n"),  currentMonth.Expired[0].Group, currentMonth.Expired[0].UnderlyingDescription, time.Now().Month(), currentMonth.AverageExpirationPrice)
 	} else {
-		fmt.Printf("Average %s MOVE Contract expiration price on %s\t"+color.Red("$%2.f\n"), currentMonth.Expired[0].UnderlyingDescription, time.Now().Month(), currentMonth.AverageExpirationPrice)
+		fmt.Printf("Average %s %s MOVE Contract expiration price on %s\t"+color.Red("$%2.f\n"), currentMonth.Expired[0].Group, currentMonth.Expired[0].UnderlyingDescription, time.Now().Month(), currentMonth.AverageExpirationPrice)
 
 	}
 
