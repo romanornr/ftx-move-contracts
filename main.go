@@ -75,5 +75,6 @@ func main() {
 	}
 
 	_, err = fmt.Fprintf(w, "\nCurrent average daily FTX MOVE contracts expiration price for %d: $%2.f\n\n", time.Now().Year(), contracts.AverageExpirationPrice)
+	_, err = fmt.Fprintf(w, "Signup on FTX with this referral link receive a 10%% discount instead of the regular 5%% discount: %s\n", "https://ftx.com/#a=10percentDiscountOnFees")
 	w.Flush()
 }
