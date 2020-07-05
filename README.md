@@ -12,7 +12,9 @@ https://medium.com/@romanornr/ftx-com-move-contracts-46c586a66408
 
 ### What does this tool do?
 
-This tool is for FTX daily MOVE contracts. It analyzes all daily MOVE Contracts from the current year we are in and shows the average expiration price of all daily MOVE Contracs. Not only that per also by week day average and by months. For example some days are more volatile than others. Data suggest that weekend days usually expire below the average expiration price. This tool can basically give you an edge.
+This tool is for FTX daily MOVE contracts. It analyzes all daily MOVE Contracts from the current year we are in and shows the average expiration price of all daily MOVE Contracts. Not only that per also by weekday average and by months. For example, some days are more volatile than others. Data suggest that weekend days usually expire below the average expiration price. This tool can basically give you an edge.
+
+Signup on FTX with this referral link receive a 10% discount instead of the regular 5% discount: https://ftx.com/#a=10percentDiscountOnFees
 
 
 ![alt text](https://github.com/romanornr/ftx-move-contracts/blob/master/screenshots/1.png?raw=true)
