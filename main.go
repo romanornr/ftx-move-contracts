@@ -27,7 +27,7 @@ func main() {
 
 	for i, month := range months {
 		move := contracts.AverageMonth(month)
-		if move.Expired[i].Expiry.Month() == time.Now().Month() {
+		if move.Expired[1].Expiry.Month() == time.Now().Month() { // TODO figure out why this works and doesn't index out of range
 			break // break out of the loop
 		}
 		if move.AverageExpirationPrice > averageYearlyExpirationPrice {
